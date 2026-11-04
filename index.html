@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start a project | Brightwire Studio</title>
+  <meta name="description" content="Tell us about your project. You'll get an email and a WhatsApp message within a minute.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+          sans: ['"Source Sans 3"', 'system-ui', 'sans-serif']
+        },
+        colors: {
+          ink: '#12202E', canvas: '#EEF1F4', line: '#D5DBE1', muted: '#546474',
+          brand: { DEFAULT: '#0B6E5C', dark: '#095647' }, danger: '#B42318'
+        }
+      } }
+    };
+  </script>
+  <style>
+    html { -webkit-text-size-adjust: 100%; }
+    :focus-visible { outline: 2px solid #0B6E5C; outline-offset: 2px; }
+    .field { width: 100%; border: 1px solid #C3CBD3; background: #fff; border-radius: 6px; padding: .7rem .8rem; font-size: 1rem; color: #12202E; transition: border-color .15s, box-shadow .15s; }
+    .field:focus { border-color: #0B6E5C; box-shadow: 0 0 0 3px rgba(11,110,92,.15); outline: none; }
+    .field[aria-invalid="true"] { border-color: #B42318; }
+    .chip input:checked + span { background: #12202E; color: #fff; border-color: #12202E; }
+    .chip input:focus-visible + span { outline: 2px solid #0B6E5C; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body class="bg-canvas text-ink font-sans antialiased">
+
+  <header class="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
+    <a href="/" class="font-display text-xl font-bold tracking-tight">Brightwire Studio</a>
+    <span class="hidden text-sm text-muted sm:block">Websites, automation and CRM systems</span>
+  </header>
+
+  <main class="mx-auto grid max-w-6xl gap-12 px-5 pb-20 pt-6 sm:px-8 lg:grid-cols-[1fr_540px] lg:gap-20 lg:pt-14">
+
+    <section>
+      <h1 class="font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl">
+        Tell us what you're building. We'll reply before you close this tab.
+      </h1>
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-muted">
+        Share a few details about your project. Our system logs your inquiry and our team sees it the moment you send it.
+      </p>
+
+      <div class="mt-12 max-w-md">
+        <h2 class="font-display text-lg font-medium">What happens after you send</h2>
+        <ol class="mt-5 border-l border-line">
+          <li class="relative pb-6 pl-6">
+            <span class="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-brand"></span>
+            <p class="font-semibold">Within seconds</p>
+            <p class="text-muted">A confirmation lands in your inbox with a copy of your request.</p>
+          </li>
+          <li class="relative pb-6 pl-6">
+            <span class="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-brand"></span>
+            <p class="font-semibold">Right after</p>
+            <p class="text-muted">You get a WhatsApp message on the number you provide.</p>
+          </li>
+          <li class="relative pl-6">
+            <span class="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-brand"></span>
+            <p class="font-semibold">Same time, on our side</p>
+            <p class="text-muted">The team is alerted with your budget and notes, so the first reply is informed.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="form-title" class="self-start">
+      <div class="rounded-lg border border-line bg-white p-6 shadow-[0_1px_2px_rgba(18,32,46,.06),0_12px_32px_-12px_rgba(18,32,46,.18)] sm:p-9">
+
+        <form id="lead-form" novalidate>
+          <h2 id="form-title" class="font-display text-2xl font-bold">Start a project</h2>
+          <p class="mt-1 text-sm text-muted">Fields marked * are required.</p>
+
+          <div id="form-error" role="alert" hidden class="mt-5 rounded-md border border-danger/30 bg-red-50 px-4 py-3 text-sm text-danger"></div>
+
+          <div class="mt-6 space-y-5">
+            <div>
+              <label for="full_name" class="mb-1.5 block text-sm font-semibold">Full name *</label>
+              <input class="field" id="full_name" name="full_name" type="text" autocomplete="name" required minlength="2" placeholder="Arjun Sharma">
+              <p class="err mt-1 text-sm text-danger" data-for="full_name" hidden></p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="email" class="mb-1.5 block text-sm font-semibold">Email *</label>
+                <input class="field" id="email" name="email" type="email" autocomplete="email" required placeholder="arjun@company.com">
+                <p class="err mt-1 text-sm text-danger" data-for="email" hidden></p>
+              </div>
+              <div>
+                <label for="phone" class="mb-1.5 block text-sm font-semibold">WhatsApp number *</label>
+                <input class="field" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91 98765 43210" aria-describedby="phone-hint">
+                <p id="phone-hint" class="mt-1 text-xs text-muted">Include your country code.</p>
+                <p class="err mt-1 text-sm text-danger" data-for="phone" hidden></p>
+              </div>
+            </div>
+
+            <div>
+              <label for="service" class="mb-1.5 block text-sm font-semibold">What do you need? *</label>
+              <select class="field" id="service" name="service" required>
+                <option value="" selected disabled>Choose a service</option>
+                <option>Web Development</option>
+                <option>Workflow Automation</option>
+                <option>CRM Setup</option>
+                <option>Something else</option>
+              </select>
+              <p class="err mt-1 text-sm text-danger" data-for="service" hidden></p>
+            </div>
+
+            <fieldset>
+              <legend class="mb-1.5 block text-sm font-semibold">Budget <span class="font-normal text-muted">(optional)</span></legend>
+              <div class="flex flex-wrap gap-2">
+                <label class="chip cursor-pointer"><input class="sr-only" type="radio" name="budget" value="Under ₹50k"><span class="inline-block rounded-md border border-line px-3.5 py-2 text-sm transition-colors hover:border-ink">Under ₹50k</span></label>
+                <label class="chip cursor-pointer"><input class="sr-only" type="radio" name="budget" value="₹50k - ₹1L"><span class="inline-block rounded-md border border-line px-3.5 py-2 text-sm transition-colors hover:border-ink">₹50k - ₹1L</span></label>
+                <label class="chip cursor-pointer"><input class="sr-only" type="radio" name="budget" value="₹1L - ₹3L"><span class="inline-block rounded-md border border-line px-3.5 py-2 text-sm transition-colors hover:border-ink">₹1L - ₹3L</span></label>
+                <label class="chip cursor-pointer"><input class="sr-only" type="radio" name="budget" value="₹3L+"><span class="inline-block rounded-md border border-line px-3.5 py-2 text-sm transition-colors hover:border-ink">₹3L+</span></label>
+              </div>
+            </fieldset>
+
+            <div>
+              <label for="message" class="mb-1.5 block text-sm font-semibold">Project details <span class="font-normal text-muted">(optional)</span></label>
+              <textarea class="field resize-y" id="message" name="message" rows="4" maxlength="1500" placeholder="What are you trying to solve, and by when?"></textarea>
+            </div>
+
+            <!-- Spam trap: real visitors never see or fill this. Not sent to n8n. -->
+            <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden">
+              <label>Leave this empty<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <input type="hidden" name="source" value="demo_landing_page">
+            <input type="hidden" name="submitted_at" value="">
+          </div>
+
+          <button id="submit-btn" type="submit" class="mt-7 w-full rounded-md bg-brand px-5 py-3.5 text-base font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70">
+            Send inquiry
+          </button>
+          <p class="mt-3 text-center text-xs text-muted">We use your details only to respond to this inquiry.</p>
+        </form>
+
+        <div id="success" hidden tabindex="-1" class="py-6 text-center">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand/10 text-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </div>
+          <h2 class="mt-5 font-display text-2xl font-bold" id="success-title">Thank you!</h2>
+          <p class="mx-auto mt-2 max-w-xs text-muted">Check your WhatsApp and email for instant confirmation.</p>
+          <button id="reset-btn" type="button" class="mt-6 text-sm font-semibold text-brand underline underline-offset-4 hover:text-brand-dark">Send another inquiry</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mx-auto max-w-6xl px-5 pb-10 text-sm text-muted sm:px-8">
+    &copy; <span id="year"></span> Brightwire Studio. This page is a demonstration.
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

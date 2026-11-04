@@ -1,0 +1,170 @@
+{
+  "name": "Lead capture: Sheets, email, WhatsApp, team alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-capture",
+        "responseMode": "onReceived",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "notes": "Production URL: https://<your-n8n-host>/webhook/lead-capture (activate the workflow first)."
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "submitted_at": "={{ $json.body.submitted_at }}",
+            "full_name": "={{ $json.body.full_name }}",
+            "email": "={{ $json.body.email }}",
+            "phone": "={{ $json.body.phone }}",
+            "service": "={{ $json.body.service }}",
+            "budget": "={{ $json.body.budget }}",
+            "message": "={{ $json.body.message }}",
+            "source": "={{ $json.body.source }}"
+          }
+        },
+        "options": {}
+      },
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        320,
+        80
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "Select your spreadsheet and sheet. Row 1 headers: submitted_at, full_name, email, phone, service, budget, message, source."
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.body.email }}",
+        "subject": "We received your inquiry",
+        "emailType": "html",
+        "message": "=<div style=\"font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#12202E\"><h2 style=\"margin:0 0 12px\">Thanks, {{ $json.body.full_name.split(' ')[0] }}. We have your inquiry.</h2><p>We received your request for <strong>{{ $json.body.service }}</strong> and will reply personally shortly.</p><p style=\"background:#F3F5F7;padding:12px 14px;border-radius:6px\"><strong>Your message</strong><br>{{ $json.body.message || 'No additional details provided.' }}</p><p>You will also get a WhatsApp message on {{ $json.body.phone }}.</p><p style=\"color:#546474;font-size:13px\">Brightwire Studio</p></div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "name": "Send confirmation email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        320,
+        240
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "",
+        "recipientPhoneNumber": "={{ $json.body.phone.replace('+','') }}",
+        "messageType": "text",
+        "textBody": "=Hi {{ $json.body.full_name.split(' ')[0] }}, thanks for contacting Brightwire Studio. We have your {{ $json.body.service }} inquiry and will be in touch shortly."
+      },
+      "name": "WhatsApp confirmation",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        400
+      ],
+      "credentials": {
+        "whatsAppApi": {
+          "id": "",
+          "name": "WhatsApp account"
+        }
+      },
+      "notes": "Enter your WhatsApp Business phone number ID. Outside the 24-hour window Meta requires an approved template message instead of free text."
+    },
+    {
+      "parameters": {
+        "chatId": "",
+        "text": "={{ $json.body.budget === '₹3L+' ? '🔥 High-value lead' : 'New lead' }}\n\nName: {{ $json.body.full_name }}\nService: {{ $json.body.service }}\nBudget: {{ $json.body.budget || 'Not given' }}\nEmail: {{ $json.body.email }}\nPhone: {{ $json.body.phone }}\n\nMessage:\n{{ $json.body.message || '-' }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "name": "Alert team on Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        560
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account"
+        }
+      },
+      "notes": "Set chatId to your chat or channel ID. Swap for a Slack node if preferred."
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send confirmation email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WhatsApp confirmation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Alert team on Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
